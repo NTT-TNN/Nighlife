@@ -62,7 +62,3 @@ function isLoggedIn(req,res,next){
 
   res.redirect('/');
 }
-
-exports.login=function login(){
-  return login;
-}
