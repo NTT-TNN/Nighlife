@@ -2,7 +2,7 @@ var express = require('express');
 var passport=require('passport');
 
 var router = express.Router();
-login=false;
+// login=false;
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -33,7 +33,7 @@ router.post('/signup',passport.authenticate('local-signup',{
 
 router.post('/login',passport.authenticate('local-login',{
   successRedirect: '/users/profile',
-  failureRedirect: '/users/login',
+  failureRedirect: '/home',
   failureFlash: true,
 }))
 
