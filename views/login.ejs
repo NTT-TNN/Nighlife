@@ -1,13 +1,10 @@
 <% include partials/head %>
 
   <body>
-    <div class="col-sm-8 col-sm-offset-2">
-      <div class="jumbotron text-center">
-        <h1><span class="fa fa-sign-in"></span> Login</h1>
+    <div class="col-md-4 col-md-offset-4">
+      <div class="text-center">
+        <h1 class="page-header"> Login</h1>
 
-        <% if (message != null) { %>
-        	<div class="alert-danger"><%= message %></div>
-        <% } %>
 
         <form action="/users/login" method="post">
           <div class="form-group">

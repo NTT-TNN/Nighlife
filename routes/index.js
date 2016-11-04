@@ -65,3 +65,11 @@ router.get('/', function(req, res, next) {
 //   res.redirect('/');
 //
 // }
+function isLoggedIn(req,res,next){
+  if(req.isAuthenticated()){
+    login=true;
+    return next();
+  }
+
+  res.redirect('/');
+}

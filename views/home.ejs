@@ -3,48 +3,82 @@
   <head>
     <meta charset="utf-8">
     <title>Nightlife </title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+</head>
+
   </head>
+  <style type="text/css">
+      .main_menu>ul>li{
+          text-decoration: none;
+          list-style: none;
+          float:left;
+
+      }
+      .main_menu{
+        background: #DDDDDD;
+        padding-bottom: 5px;
+        height: 40px;
+        margin-top: 5px;
+      }
+      .location{
+        width: 400px;
+        height: 30px;
+      }
+      .footer {
+          padding-top: 19px;
+          color: #777;
+          border-top: 1px solid #e5e5e5;
+      }
+      .gly{
+
+        height:50px;
+        margin-top: 10px;
+
+      }
+  </style>
   <body>
-    <div class="container">
-      <!-- <input type="text" class="" name="location" placeholder="Where you at?"> -->
-      <!-- <button type="submit" class="btn btn-success" onclick="search();">Submit</button> -->
-      <div class="row">
-
-
-        <div class="col-xs-12 col-md-8">
-          <input type="text" class="" name="location" placeholder="Where you at?">
-          <button type="submit" class="btn btn-success" onclick="search();">Submit</button>
-        </div>
-
-        <div class="col-xs-6 col-md-4">
-          <div class="jumbotron text-center">
-            <!-- <h1><span class="fa fa-sign-in"></span> Login</h1> -->
-
-            <% if (message != null) { %>
-            	<div class="alert-danger"><%= message %></div>
-            <% } %>
-
-            <form action="/users/login" method="post">
-              <div class="form-group">
-                  <!-- <label>Email</label> -->
-                  <input type="text" class="form-control" name="email" placeholder="Password">
-              </div>
-              <div class="form-group">
-                <!-- <label>Password</label> -->
-                <input type="password" class="form-control" name="password" placeholder="Password">
-              </div>
-              <div>
-                <input id="loginButton" type="submit" class="form-control" value="Submit" />
-              </div>
-            </form>
-            <span class="fa fa-sign-in"> Don't have an account?<a href="/users/signup"> Signup</a></span>
+    <!-- login= <%= login %> -->
+    <!-- <button type="button" class="btn btn-default" name="button">Login</button> -->
+    <div class="col-md-10 col-md-offset-1">
+    <div class="main_menu clearfix header">
+        <ul class="nav nav-bills">
+          <li class="col-md-3"><h5 style="padding-top: 5px;">Nightlife Coordination</h5></li>
+          <li class="col-md-5">
+          <div style="padding-top: 5px;">
+             <form >
+                <input class="text-center location" type="text" placeholder="Where you at?"></input>
+             </form>
           </div>
-
-        </div>
-      </div>
-
-      <div class="row" id="content">
+          </li>
+          <li class="col-md-1" >
+              <div style="padding-top: 3px;">
+                    <button class="btn" >Search</button>
+              </div>
+          </li>
+          <% if(login===true){ %>
+            <li>
+              <a href="/users/logout" ><span class="fa fa-sign-in"></span>Sign Out</a>
+            </li>
+          <%}else{%>
+            <li class="col-md-1 text-right">
+                <a href="/users/login">Login</a>
+            </li>
+            <li role="presentation" class="col-md-2 text-right">
+                <a href="/users/signup">Sign up</a>
+            </li>
+          <%}%>
+        </ul>
+    </div>
+    <div class="myBody text-center">
+            <h1>Nightlife Coordination</h1>
+            <h5>By TTH</h5>
+            <div class="row">
+              <i class="gly glyphicon glyphicon-map-marker"></i>
+              <i class="gly glyphicon glyphicon-camera"></i>
+              <i class="gly glyphicon glyphicon-glass"></i>
+            </div>
+              <div class="row" id="content">
 
 
         <% for(var i=0;i<dt.businesses.length;++i){ %>
@@ -61,6 +95,11 @@
                   </a>
                   <br>
                   <span> <%= dt.businesses[i].snippet_text %> </span>
+                  <% if(login===true){ %>
+                      <button type="button" name="button">Count</button>
+                    <%}else{%>
+                      <button type="button" name="button" disabled="true">Count</button>
+                    <%}%>
                 </div>
               </div>
 
@@ -70,9 +109,13 @@
           <br>
         <%}%>
       </div>
-
+      <div class="footer nav-fixed-bottom">
+        <p>&copy; 2016 Nightlife Coordination</p>
+      </div>
     </div>
-
   </body>
 
+  <script type="text/javascript">
+
+  </script>
 </html>

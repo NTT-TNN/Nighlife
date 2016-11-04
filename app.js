@@ -1,29 +1,10 @@
-var request=require('request');
-// var merge = require('merge');
-// var yelp = require('node-yelp-api');
+
  linkToGetJson="";
  dt="";
-// var options = {
-//   consumer_key: 'C7L9OyGBJ8H15J_TqF_Ihw',
-//   consumer_secret: 'T8VbkflCPM9Iob0MYZTki7gVGn4',
-//   token: 'z4K23QyTEzbc0VodU7qb3qKPw3dTe8Pc',
-//   token_secret: 'waUKeikiS97zKSqXzq3qeIrrqIU',
-// };
-//
-// // See http://www.yelp.com/developers/documentation/v2/search_api
-// var parameters = {
-//   term: 'food',
-//   location: 'Montreal',
-// };
-// yelp.search(merge(options, parameters), (err,data) => {
-//   //console.log("linkToGetJson:");
-//   linkToGetJson=data.request.uri.href;
-//   console.log(linkToGetJson);
-// }, (err) => {
-//   console.error(err);
-// });
-var Yelp = require('yelp');
+ login=false;
 
+
+var Yelp = require('yelp');
 var yelp = new Yelp({
   consumer_key: 'C7L9OyGBJ8H15J_TqF_Ihw',
   consumer_secret: 'T8VbkflCPM9Iob0MYZTki7gVGn4',
@@ -40,25 +21,16 @@ yelp.search({ term: 'food', location: 'Montreal' })
 .catch(function (err) {
   console.error(err);
 });
-// request({
-//     url: linkToGetJson,
-//     json: true
-// }, function (error, response, body) {
-//   console.log("link las");
-//   console.log(linkToGetJson);
-//     if (!error && response.statusCode === 200) {
-//         data=body;
-//         console.log(body) // Print the json response
-//     }
-// })
-console.log(linkToGetJson);
-login=false;
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -128,6 +100,12 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+io.on('connection',function(socket){
+  socket.on('search',function (add){
+    io.emit('display')
+  })
+})
 
 app.listen(port,function(){
   console.log(port);

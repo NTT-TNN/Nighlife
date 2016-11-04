@@ -1,11 +1,12 @@
+
 var express = require('express');
 var passport=require('passport');
 
 var router = express.Router();
 // login=false;
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/',isLoggedIn, function(req, res, next) {
+  res.render('home',{message:req.flash('loginMessage')});
 });
 
 router.get('/login',function(req,res,next){
@@ -20,20 +21,21 @@ router.get('/profile',isLoggedIn,function(req,res){
   res.render('profile.ejs',{user:req.user});
 });
 
-router.get('/logout',function(req,res){
+router.get('/logout',isLoggedIn,function(req,res){
   req.logout();
-  res.redirect('/');
+  login=false;
+  res.redirect('/users');
 })
 
 router.post('/signup',passport.authenticate('local-signup',{
-  successRedirect:'/users/profile',
+  successRedirect:'/',
   failureRedirect:'/users/signup',
   failureFlash:true,
 }));
 
 router.post('/login',passport.authenticate('local-login',{
-  successRedirect: '/users/profile',
-  failureRedirect: '/home',
+  successRedirect: '/users',
+  failureRedirect: '/users/login',
   failureFlash: true,
 }))
 
