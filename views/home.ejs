@@ -96,9 +96,9 @@
                   <br>
                   <span> <%= dt.businesses[i].snippet_text %> </span>
                   <% if(login===true){ %>
-                      <button type="button" name="button">Count</button>
+                      <button type="button" name="button"><%= dt.businesses[i].c %></button>
                     <%}else{%>
-                      <button type="button" name="button" disabled="true">Count</button>
+                      <button type="button" name="button" disabled="true"><%= dt.businesses[i].c %></button>
                     <%}%>
                 </div>
               </div>

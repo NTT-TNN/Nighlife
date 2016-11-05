@@ -1,8 +1,9 @@
 
- linkToGetJson="";
- dt="";
- login=false;
-
+linkToGetJson="";
+dt="";
+add="sf";
+login=false;
+getJson=false;
 
 var Yelp = require('yelp');
 var yelp = new Yelp({
@@ -13,10 +14,55 @@ var yelp = new Yelp({
 });
 
 // See http://www.yelp.com/developers/documentation/v2/search_api
-yelp.search({ term: 'food', location: 'Montreal' })
+yelp.search({ term: 'bar', location: add })
 .then(function (data) {
   dt=data;
+  getJson=true;
   console.log("get json success");
+  // query = {add:'Montreal'},
+  //  update = {
+  //      $push : {
+  //        businesses :  {
+  //             "name": dt.businesses[0].name,
+  //             "url":dt.businesses[0].url,
+  //             "snippet_text":dt.businesses[0].snippet_text,
+  //             "c": 0,
+  //
+  //           } //inserted data is the object to be inserted
+  //  }
+  //    },
+  //    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+  //    Dt.findOneAndUpdate(query, update, options, function(error, result) {
+  //        if (error) throw err ;
+  //
+  //        console.log("update thanh cong");
+  //    });
+
+  Dt.findOne({'add':add},function(err,result){
+    if(err) throw err;
+    if(result){
+      dt=result;
+      console.log("du lieu da ton tai");
+    }else{
+      var newDt=new Dt();
+      newDt.add=add;
+      for(var i=0;i<dt.businesses.length;++i){
+        var temp={"name":dt.businesses[i].name,
+                  "url":dt.businesses[i].url,
+                  "snippet_text":dt.businesses[i].snippet_text,
+                  "image_url":dt.businesses[i].image_url,
+                  "c":0
+                };
+        newDt.businesses.push(temp);
+      }
+
+      newDt.save(function(err){
+        if(err) throw err;
+        console.log("luu du lieu thanh cong");
+      })
+      dt=newDt;
+    }
+  })
 })
 .catch(function (err) {
   console.error(err);
@@ -30,7 +76,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var mongoose = require('mongoose');
+var flash = require('connect-flash');
+var session = require('express-session');
 
+var configDB = require('./config/database.js');
+mongoose.connect(configDB.url);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -42,9 +95,16 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var session = require('express-session');
+var Dt = require('./models/dt');
 
-var configDB = require('./config/database.js');
-mongoose.connect(configDB.url);
+// tim va update database theo dia chi
+// var query={},update={},options={};
+// while (getJson) {
+//
+// }
+
+
+
 
 require('./config/passport')(passport);
 
