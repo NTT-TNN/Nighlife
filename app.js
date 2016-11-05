@@ -1,7 +1,7 @@
 
 linkToGetJson="";
 dt="";
-add="sf";
+add="new yorks";
 login=false;
 getJson=false;
 
