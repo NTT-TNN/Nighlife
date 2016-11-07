@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <title>Nightlife </title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 </head>
 
   </head>
@@ -26,6 +28,7 @@
         height: 30px;
       }
       .footer {
+          margin-top: 20px;
           padding-top: 19px;
           color: #777;
           border-top: 1px solid #e5e5e5;
@@ -36,87 +39,71 @@
         margin-top: 10px;
 
       }
+      #ds{
+        margin-top: 10px;
+      }
+      .content{
+        margin-top: 20px;
+        background: #DDDDDD;
+      }
+      #but{
+        margin-left: 10px;
+      }
   </style>
   <body>
     <!-- login= <%= login %> -->
     <!-- <button type="button" class="btn btn-default" name="button">Login</button> -->
     <div class="col-md-10 col-md-offset-1">
-    <div class="main_menu clearfix header">
-        <ul class="nav nav-bills">
-          <li class="col-md-3"><h5 style="padding-top: 5px;">Nightlife Coordination</h5></li>
-          <li class="col-md-5">
-          <div style="padding-top: 5px;">
-             <form >
-                <input class="text-center location" type="text" placeholder="Where you at?"></input>
-
-             </form>
-          </div>
-          </li>
-          <li class="col-md-1" >
-              <div style="padding-top: 3px;">
-                    <button class="btn" >Search</button>
-              </div>
-          </li>
-          <% if(login===true){ %>
-            <li>
-              <a href="/users/logout" ><span class="fa fa-sign-in"></span>Sign Out</a>
-            </li>
-          <%}else{%>
-            <li class="col-md-1 text-right">
-                <a href="/users/login">Login</a>
-            </li>
-            <li role="presentation" class="col-md-2 text-right">
-                <a href="/users/signup">Sign up</a>
-            </li>
-          <%}%>
-        </ul>
-    </div>
-    <div class="myBody text-center">
-            <h1>Nightlife Coordination</h1>
-            <h5>By TTH</h5>
-            <div class="row">
-              <i class="gly glyphicon glyphicon-map-marker"></i>
-              <i class="gly glyphicon glyphicon-camera"></i>
-              <i class="gly glyphicon glyphicon-glass"></i>
+      <div class="main_menu clearfix header">
+          <ul class="nav nav-bills">
+            <li class="col-md-3"><h5 style="padding-top: 5px;">Nightlife Coordination</h5></li>
+            <li class="col-md-5">
+            <div style="padding-top: 5px;">
+               <form action="">
+                  <input class="text-center location" id="locate" type="text" placeholder="Where you at?"></input>
+                    <!-- <button class="btn" style{float:left;} onclick="tk();">Submit</button> -->
+               </form>
             </div>
-              <div class="row" id="content">
-
-
-        <% for(var i=0;i<dt.businesses.length;++i){ %>
-          <div class="">
-            <form class="" action="" method="post">
-              <div class="row">
-                <div class="col-md-1">
-                  <img src="<%= dt.businesses[i].image_url %>" alt="" />
+            </li>
+            <li class="col-md-1" >
+                <div style="padding-top: 3px;">
+                      <button class="btn">Search</button>
                 </div>
-
-                <div class="col-md-11">
-                  <a href="<%= dt.businesses[i].url %>">
-                    <%= dt.businesses[i].name %>
-                  </a>
-                  <br>
-                  <span> <%= dt.businesses[i].snippet_text %> </span>
-                  <% if(login===true){ %>
-                      <button type="button" name="button"><%= dt.businesses[i].c %></button>
-                    <%}else{%>
-                      <button type="button" name="button" disabled="true"><%= dt.businesses[i].c %></button>
-                    <%}%>
-                </div>
-              </div>
-
-
-            </form>
-          </div>
-          <br>
-        <%}%>
+            </li>
+            <% if(login===true){ %>
+              <li>
+                <a href="/users/logout" ><span class="fa fa-sign-in"></span>Sign Out</a>
+              </li>
+            <%}else{%>
+              <li class="col-md-1 text-right">
+                  <a href="/users/login">Login</a>
+              </li>
+              <li role="presentation" class="col-md-2 text-right">
+                  <a href="/users/signup">Sign up</a>
+              </li>
+            <%}%>
+          </ul>
       </div>
-      <div class="footer nav-fixed-bottom">
-        <p>&copy; 2016 Nightlife Coordination</p>
+      <div class="myBody text-center">
+              <h1>Nightlife Coordination</h1>
+              <h5>By TTH</h5>
+              <div class="row">
+                <i class="gly glyphicon glyphicon-map-marker"></i>
+                <i class="gly glyphicon glyphicon-camera"></i>
+                <i class="gly glyphicon glyphicon-glass"></i>
+              </div>
+              <div id="ds" class="row col-md-8 col-md-offset-2 container-fluid">
+                
+              </div>
+          
+             <!--  <div class="footer ">
+                <p>&copy; 2016 Nightlife Coordination</p>
+              </div> -->
       </div>
     </div>
+    
+     <script type="text/javascript" src="/search.js"></script> 
   </body>
-
-  <script type="text/javascript">
-
-  </script>
+  
+    
 </html>

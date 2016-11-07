@@ -1,80 +1,87 @@
 
 linkToGetJson="";
 dt="";
-add="new yorks";
+add="";
 login=false;
 getJson=false;
+// var http = require('http').Server(app);
+// var io = require('socket.io')(http);
+// io.sockets.on('connection', function (socket) {
+//     socket.on('send', function (doc) {
+//       console.log(doc);
+//        add=doc;
+//        console.log(add);
+// // { term: 'food', location: 'Montreal' }
+//     //   yelp.search(options)
+//     //   .then(function (data) {
+//     //       dt=data;
+//     //     console.log("get json success");
+//     //     console.log(dt.businesses.length);
+//     //     io.sockets.emit('locate', dt.businesses);
+//     // })
+//     //   .catch(function (err) {
+//     //  console.error(err);
+//     // });
 
-var Yelp = require('yelp');
-var yelp = new Yelp({
-  consumer_key: 'C7L9OyGBJ8H15J_TqF_Ihw',
-  consumer_secret: 'T8VbkflCPM9Iob0MYZTki7gVGn4',
-  token: 'z4K23QyTEzbc0VodU7qb3qKPw3dTe8Pc',
-  token_secret: 'waUKeikiS97zKSqXzq3qeIrrqIU',
-});
+ 
+//     });
+// });
+
+
+// var Yelp = require('yelp');
+// var yelp = new Yelp({
+//   consumer_key: 'C7L9OyGBJ8H15J_TqF_Ihw',
+//   consumer_secret: 'T8VbkflCPM9Iob0MYZTki7gVGn4',
+//   token: 'z4K23QyTEzbc0VodU7qb3qKPw3dTe8Pc',
+//   token_secret: 'waUKeikiS97zKSqXzq3qeIrrqIU',
+// });
 
 // See http://www.yelp.com/developers/documentation/v2/search_api
-yelp.search({ term: 'bar', location: add })
-.then(function (data) {
-  dt=data;
-  getJson=true;
-  console.log("get json success");
-  // query = {add:'Montreal'},
-  //  update = {
-  //      $push : {
-  //        businesses :  {
-  //             "name": dt.businesses[0].name,
-  //             "url":dt.businesses[0].url,
-  //             "snippet_text":dt.businesses[0].snippet_text,
-  //             "c": 0,
-  //
-  //           } //inserted data is the object to be inserted
-  //  }
-  //    },
-  //    options = { upsert: true, new: true, setDefaultsOnInsert: true };
-  //    Dt.findOneAndUpdate(query, update, options, function(error, result) {
-  //        if (error) throw err ;
-  //
-  //        console.log("update thanh cong");
-  //    });
+// yelp.search({ term: 'bar', location: add })
+// .then(function (data) {
+//   dt=data;
+//   getJson=true;
+//   console.log("get json success");
 
-  Dt.findOne({'add':add},function(err,result){
-    if(err) throw err;
-    if(result){
-      dt=result;
-      console.log("du lieu da ton tai");
-    }else{
-      var newDt=new Dt();
-      newDt.add=add;
-      for(var i=0;i<dt.businesses.length;++i){
-        var temp={"name":dt.businesses[i].name,
-                  "url":dt.businesses[i].url,
-                  "snippet_text":dt.businesses[i].snippet_text,
-                  "image_url":dt.businesses[i].image_url,
-                  "c":0
-                };
-        newDt.businesses.push(temp);
-      }
 
-      newDt.save(function(err){
-        if(err) throw err;
-        console.log("luu du lieu thanh cong");
-      })
-      dt=newDt;
-    }
-  })
-})
-.catch(function (err) {
-  console.error(err);
-});
+//   Dt.findOne({'add':add},function(err,result){
+//     if(err) throw err;
+//     if(result){
+//       dt=result;
+//       console.log("du lieu da ton tai");
+//     }else{
+//       var newDt=new Dt();
+//       newDt.add=add;
+//       for(var i=0;i<dt.businesses.length;++i){
+//         var temp={"name":dt.businesses[i].name,
+//                   "url":dt.businesses[i].url,
+//                   "snippet_text":dt.businesses[i].snippet_text,
+//                   "image_url":dt.businesses[i].image_url,
+//                   "c":0
+//                 };
+//         newDt.businesses.push(temp);
+//       }
 
+//       newDt.save(function(err){
+//         if(err) throw err;
+//         console.log("luu du lieu thanh cong");
+//       })
+//       dt=newDt;
+//     }
+//   })
+// })
+// .catch(function (err) {
+//   console.error(err);
+// });
+var http = require('http');
 var express = require('express');
+var app = express();
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var server = require('http').createServer(app);
+var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -108,7 +115,7 @@ var Dt = require('./models/dt');
 
 require('./config/passport')(passport);
 
-var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -160,14 +167,25 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+io.sockets.on('connection', function(socket){
+  socket.on('find', function(data){
+    console.log('city '+data.city);
+      Dt.findOne({'add':data.city},function(err,result){
+    if(err) throw err;
+    var stt=data.myName;
+    //console.log(result.businesses[stt]);
+      result.businesses[stt].c++;
+      result.save(function(err){
+        if(err) throw err;
+        console.log("luu du lieu thanh cong");
+      });
+      io.sockets.emit('return', result);
+  });
+    
+  });
+});
 
-io.on('connection',function(socket){
-  socket.on('search',function (add){
-    io.emit('display')
-  })
-})
-
-app.listen(port,function(){
+server.listen(port,function(){
   console.log(port);
 });
 module.exports = app;
