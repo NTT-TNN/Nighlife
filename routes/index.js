@@ -1,8 +1,9 @@
 var express = require('express');
 var passport=require('passport');
 var router = express.Router();
-var Yelp = require('yelp');
+
 var Dt = require('../models/dt');
+var Yelp = require('yelp');
 var yelp = new Yelp({
   consumer_key: 'C7L9OyGBJ8H15J_TqF_Ihw',
   consumer_secret: 'T8VbkflCPM9Iob0MYZTki7gVGn4',
