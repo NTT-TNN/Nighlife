@@ -8,7 +8,8 @@ var dtSchema=mongoose.Schema({
     snippet_text:String,
     image_url:String,
     c:Number
-  }]
+  }],
+  likes:[]
 });
 
 module.exports = mongoose.model('Dt',dtSchema);

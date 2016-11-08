@@ -1,4 +1,4 @@
-
+logged='';
 linkToGetJson="";
 dt="";
 add="";

@@ -61,6 +61,5 @@ function isLoggedIn(req,res,next){
     login=true;
     return next();
   }
-
   res.redirect('/');
 }
