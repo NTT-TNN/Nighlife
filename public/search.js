@@ -6,7 +6,7 @@ $(function () {
         name = $('#locate').val();
         console.log(name);
         $.getJSON('/search/'+name,  function (data){
-            console.log(data.businesses);
+            console.log(data);
             for(var i = 0 ; i < 20 ; i++){
               var nameBar = data.businesses[i].name;
               var imgUrl=data.businesses[i].image_url;
@@ -19,13 +19,13 @@ $(function () {
                // butEjs="<%if(login ===true){%>"+"<button id="+but+" name="+i+log1+">"+count+"</button>"+
                // '<%}else{%>'+"<button id="+but+" name="+i+log1+">"+count+"</button>"+"<%}%>";
                // console.log(butEjs.toString());
-                
+                // disabled='true'
               //var onC= ""
 // "<button id="+but+" name="+i+log+">"+count+"</button>"
               var a="<div class='content'>"+
               "<a href="+URL+">" + nameBar + "</a>"+
               "<div class='row bar' id=" + i +">"+
-                "<img class='img' src="+imgUrl+">"+"<button disabled='true' id="+but+" name="+i+">"+count+"</button>"+
+                "<img class='img' src="+imgUrl+">"+"<button  id="+but+" name="+i+">"+count+"</button>"+
               "</div>"+  
               "<i>"+text+"</i>"+
               "</div>";
@@ -46,7 +46,7 @@ $(function () {
                 console.log(dl);
                 var count=dl.businesses[myName].c;
                 console.log(count);
-                var butReplace="<button id="
+                // var butReplace="<button id="
                 // $('#'+myName).remove($("button"));
                 // $('#'+myName).append($("<button name="+myName+">").text(count));
                 //$('#but'+myName).replaceWith('<button name>');
