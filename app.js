@@ -4,75 +4,7 @@ dt="";
 add="";
 login=false;
 getJson=false;
-// var http = require('http').Server(app);
-// var io = require('socket.io')(http);
-// io.sockets.on('connection', function (socket) {
-//     socket.on('send', function (doc) {
-//       console.log(doc);
-//        add=doc;
-//        console.log(add);
-// // { term: 'food', location: 'Montreal' }
-//     //   yelp.search(options)
-//     //   .then(function (data) {
-//     //       dt=data;
-//     //     console.log("get json success");
-//     //     console.log(dt.businesses.length);
-//     //     io.sockets.emit('locate', dt.businesses);
-//     // })
-//     //   .catch(function (err) {
-//     //  console.error(err);
-//     // });
 
- 
-//     });
-// });
-
-
-// var Yelp = require('yelp');
-// var yelp = new Yelp({
-//   consumer_key: 'C7L9OyGBJ8H15J_TqF_Ihw',
-//   consumer_secret: 'T8VbkflCPM9Iob0MYZTki7gVGn4',
-//   token: 'z4K23QyTEzbc0VodU7qb3qKPw3dTe8Pc',
-//   token_secret: 'waUKeikiS97zKSqXzq3qeIrrqIU',
-// });
-
-// See http://www.yelp.com/developers/documentation/v2/search_api
-// yelp.search({ term: 'bar', location: add })
-// .then(function (data) {
-//   dt=data;
-//   getJson=true;
-//   console.log("get json success");
-
-
-//   Dt.findOne({'add':add},function(err,result){
-//     if(err) throw err;
-//     if(result){
-//       dt=result;
-//       console.log("du lieu da ton tai");
-//     }else{
-//       var newDt=new Dt();
-//       newDt.add=add;
-//       for(var i=0;i<dt.businesses.length;++i){
-//         var temp={"name":dt.businesses[i].name,
-//                   "url":dt.businesses[i].url,
-//                   "snippet_text":dt.businesses[i].snippet_text,
-//                   "image_url":dt.businesses[i].image_url,
-//                   "c":0
-//                 };
-//         newDt.businesses.push(temp);
-//       }
-
-//       newDt.save(function(err){
-//         if(err) throw err;
-//         console.log("luu du lieu thanh cong");
-//       })
-//       dt=newDt;
-//     }
-//   })
-// })
-// .catch(function (err) {
-//   console.error(err);
-// });
 
 var http = require('http');
 var express = require('express');
@@ -96,7 +28,7 @@ mongoose.connect(configDB.url);
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -104,15 +36,6 @@ var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var session = require('express-session');
 var Dt = require('./models/dt');
-
-// tim va update database theo dia chi
-// var query={},update={},options={};
-// while (getJson) {
-//
-// }
-
-
-
 
 require('./config/passport')(passport);
 
